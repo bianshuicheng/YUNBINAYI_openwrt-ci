@@ -71,6 +71,16 @@ jobs:
         VERSION_KERNEL=$(grep -oP 'LINUX_KERNEL_HASH-\K[0-9]+\.[0-9]+\.[0-9]+' include/kernel-6.12)
         echo "VERSION_KERNEL=$VERSION_KERNEL" >> $GITHUB_ENV
 
+    - name: Create distfeeds.conf(创建 distfeeds.conf)
+      run: |
+        cd $OPENWRT_PATH
+        mkdir -p files/etc/opkg
+        echo -e "src/gz openwrt_base https://mirror.nju.edu.cn/immortalwrt/releases/24.10-SNAPSHOT/packages/aarch64_cortex-a53/base/" > files/etc/opkg/distfeeds.conf
+        echo -e "src/gz openwrt_luci https://mirror.nju.edu.cn/immortalwrt/releases/24.10-SNAPSHOT/packages/aarch64_cortex-a53/luci/" >> files/etc/opkg/distfeeds.conf
+        echo -e "src/gz openwrt_packages https://mirror.nju.edu.cn/immortalwrt/releases/24.10-SNAPSHOT/packages/aarch64_cortex-a53/packages" >> files/etc/opkg/distfeeds.conf
+        echo -e "src/gz openwrt_routing https://mirror.nju.edu.cn/immortalwrt/releases/24.10-SNAPSHOT/packages/aarch64_cortex-a53/routing" >> files/etc/opkg/distfeeds.conf
+        echo -e "src/gz openwrt_telephony https://mirror.nju.edu.cn/immortalwrt/releases/24.10-SNAPSHOT/packages/aarch64_cortex-a53/telephony" >> files/etc/opkg/distfeeds.conf
+
     - name: Generate Variables(生成变量)
       run: |
         cp $CONFIG_FILE $OPENWRT_PATH/.config
